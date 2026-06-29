@@ -11,48 +11,48 @@ class ANSI_Code_output():
 class ANSI_Codes_Foreground(ANSI_Code_output):
 
     # Standart
-    Black = 30
-    Red = 31
-    Green = 32
-    Yellow = 33
-    Blue = 34
-    Purple = 35
-    Cyan = 36
-    White = 37
+    BLACK = 30
+    RED = 31
+    GREEN = 32
+    YELLOW = 33
+    BLUE = 34
+    PURPLE = 35
+    CYAN = 36
+    WHITE = 37
 
     # Bright Standart not for stupid terminals and term env
-    LIGHTBlack = 90
-    LIGHTRed = 91
-    LIGHTGreen = 92
-    LIGHTYellow = 93
-    LIGHTBlue = 94
-    LIGHTPurple = 95
-    LIGHTCyan = 96
-    LIGHTWhite = 97
+    LIGHTBLACK = 90
+    LIGHTRED = 91
+    LIGHTGREEN = 92
+    LIGHTYELLOW = 93
+    LIGHTBLUE = 94
+    LIGHTPURPLE = 95
+    LIGHTCYAN = 96
+    LIGHTWHITE = 97
 
     RESET = 0
 
 class ANSI_Codes_Background(ANSI_Code_output):
 
     # Standart
-    Black = 40
-    Red = 41
-    Green = 42
-    Yellow = 43
-    Blue = 44
-    Purple = 45
-    Cyan = 46
-    White = 47
+    BLACK = 40
+    RED = 41
+    GREEN = 42
+    YELLOW = 43
+    BLUE = 44
+    PURPLE = 45
+    CYAN = 46
+    WHITE = 47
 
     # Bright Standart not for stupid terminals and term env
-    LIGHTBlack = 100
-    LIGHTRed = 101
-    LIGHTGreen = 102
-    LIGHTYellow = 103
-    LIGHTBlue = 104
-    LIGHTPurple = 105
-    LIGHTCyan = 106
-    LIGHTWhite = 107
+    LIGHTBLACK = 100
+    LIGHTRED = 101
+    LIGHTGREEN = 102
+    LIGHTYELLOW = 103
+    LIGHTBLUE = 104
+    LIGHTPURPLE = 105
+    LIGHTCYAN = 106
+    LIGHTWHITE = 107
 
     RESET = 0
 
