@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-ANCI_base = '\033['
+ANSI_base = '\033['
 
 class ANSI_Code_output():
     def __init__(self):
         for name_code in dir(self):
             if not name_code.startswith("_"):
-                setattr(self, name_code, f'{ANCI_base}{getattr(self, name_code)}m')
+                setattr(self, name_code, f'{ANSI_base}{getattr(self, name_code)}m')
         
 class ANSI_Codes_Foreground(ANSI_Code_output):
 
@@ -21,7 +21,7 @@ class ANSI_Codes_Foreground(ANSI_Code_output):
     WHITE = 37
 
     # Bright Standart not for stupid terminals and term env
-    LIGHTBLACK = 90
+    GRAY = 90
     LIGHTRED = 91
     LIGHTGREEN = 92
     LIGHTYELLOW = 93
@@ -44,8 +44,10 @@ class ANSI_Codes_Background(ANSI_Code_output):
     CYAN = 46
     WHITE = 47
 
+    REVERSE = 7
+    
     # Bright Standart not for stupid terminals and term env
-    LIGHTBLACK = 100
+    GRAY = 100
     LIGHTRED = 101
     LIGHTGREEN = 102
     LIGHTYELLOW = 103
@@ -56,5 +58,18 @@ class ANSI_Codes_Background(ANSI_Code_output):
 
     RESET = 0
 
+
+class TEXT_STYLE(ANSI_Code_output):
+
+    BOLD = 1 
+    DIM = 2 
+    ITALIC = 3 
+    UNDERLINE = 4
+    BLINK = 5
+    OVERLINE = 53
+
+    RESET = 0
+
 BG = ANSI_Codes_Background()
 FG = ANSI_Codes_Foreground()
+ST = TEXT_STYLE()
