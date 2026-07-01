@@ -51,6 +51,7 @@ for color in colors:
 
 print(spaces)
 
+Hat_print("Styles")
 for style in styles:
     print(f'{spaces}{getattr(ST, style)} {style:^{crange}} {ST.RESET}')
 
@@ -59,4 +60,4 @@ Hat_print("256Color Mode")
 COLOR256_DEMO = f'{spaces}{BG256(123)}{FG.BLACK} {"BG256(123)":^{crange}} {FG.RESET}  │  {FG256(123)} {"FG256(123)":^{crange}} {FG.RESET}'
 print(COLOR256_DEMO)
 print(FG256(257))
-
+print(FG256(0))

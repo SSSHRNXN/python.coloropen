@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from datetime import date, datetime
+
 ANSI_base = '\033['
 
 class ANSI_Code_output():
@@ -71,22 +73,41 @@ class TEXT_STYLE(ANSI_Code_output):
 
 
 def Foreground_256Colors(color_value):
-    if not color_value > 256:
-        return f'{ANSI_base}38;5;{color_value}m'
-    else:
+    if color_value > 256:
         invalid_value = f'{FG.RED}{ST.UNDERLINE}{ST.ITALIC}color_value = {color_value}{FG.RESET}'
-        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 256'
+        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-256'
+    elif color_value < 1:
+        invalid_value = f'{FG.RED}{ST.UNDERLINE}{ST.ITALIC}color_value = {color_value}{FG.RESET}'
+        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-256'
+    else:
+        return f'{ANSI_base}38;5;{color_value}m'
 
 def Background_256Colors(color_value):
-    if not color_value > 256:
-        return f'{ANSI_base}48;5;{color_value}m'
-    else:
+    if color_value > 256:
         invalid_value = f'{FG.RED}{ST.UNDERLINE}{ST.ITALIC}color_value = {color_value}{FG.RESET}'
-        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 256'
-
+        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-256'
+    elif color_value < 1:
+        invalid_value = f'{FG.RED}{ST.UNDERLINE}{ST.ITALIC}color_value = {color_value}{FG.RESET}'
+        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-256'
+    else:
+        return f'{ANSI_base}48;5;{color_value}m'
 
 BG = ANSI_Codes_Background()
 FG = ANSI_Codes_Foreground()
 ST = TEXT_STYLE()
 FG256 = Foreground_256Colors
 BG256 = Background_256Colors
+
+def ColorLogger(message, level="INFO"):
+    date = datetime.now().strftime("%Y.%M.%d %H:%M:%S")
+    log_levels = {
+            'INFO' : FG.GREEN,
+            'WARNING' : FG.YELLOW + ST.ITALIC,
+            'ERROR' : FG.RED,
+            'CRITICAL' : FG.RED + ST.BLINK + ST.BOLD + ST.UNDERLINE,
+            'DEBUG' : FG.GRAY
+            }
+    color = log_levels.get(level.upper(), FG.WHITE)
+    return f'{FG.CYAN}[{date}] {color}[{level.upper()}] {message}{FG.RESET}'
+
+clog = ColorLogger
