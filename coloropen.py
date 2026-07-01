@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import logging
-
 ANSI_base = '\033['
 
 class ANSI_Code_output():
