@@ -99,10 +99,10 @@ FG256 = Foreground_256Colors
 BG256 = Background_256Colors
 
 def ColorLogger(message, level="INFO"):
-    date = datetime.now().strftime("%Y.%M.%d %H:%M:%S")
+    date = datetime.now().strftime("%Y-%M-%d %H:%M:%S")
     log_levels = {
             'INFO' : FG.GREEN,
-            'WARNING' : FG.YELLOW + ST.ITALIC,
+            'WARNING' : FG.YELLOW,
             'ERROR' : FG.RED,
             'CRITICAL' : FG.RED + ST.BLINK + ST.BOLD + ST.UNDERLINE,
             'DEBUG' : FG.GRAY
