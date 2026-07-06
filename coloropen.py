@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 from datetime import date, datetime
+from re import T
+import shutil
 
 ANSI_base = '\033['
 
@@ -9,6 +11,10 @@ class ANSI_Code_output():
         for name_code, value in vars(self.__class__).items():
             if isinstance(value, int) and not name_code.startswith("_"):
                 setattr(self, name_code, f'{ANSI_base}{value}m')
+
+
+class TTY_Stat():
+    COLUMNS, LINES = shutil.get_terminal_size()
         
 class ANSI_Codes_Foreground(ANSI_Code_output):
 
@@ -102,12 +108,37 @@ def ColorLogger(message, level="INFO"):
     date = datetime.now().strftime("%Y-%M-%d %H:%M:%S")
     log_levels = {
             'INFO' : FG.GREEN,
+            'INF' : FG.GREEN,
             'WARNING' : FG.YELLOW,
             'ERROR' : FG.RED,
             'CRITICAL' : FG.RED + ST.BLINK + ST.BOLD + ST.UNDERLINE,
             'DEBUG' : FG.GRAY
             }
+
+    lenghlevel = len(max(log_levels, key=len))
     color = log_levels.get(level.upper(), FG.WHITE)
-    return f'{FG.CYAN}[{date}] {color}[{level.upper()}] {message}{FG.RESET}'
+    if level.upper() == "CRITICAL":
+        return f'{FG.CYAN}[{date}]  {color}{level.upper():^{lenghlevel}}{FG.RESET}  {color}{message}{FG.RESET}'
+    else:
+        return f'{FG.CYAN}[{date}] {color}[{level.upper():^{lenghlevel - 1}}] {message}{FG.RESET}'
 
 clog = ColorLogger
+
+
+class Text_Alignment():
+    from coloropen import TTY_Stat
+
+    def CENTER(message, borders=False):
+        message_len = len(message)
+        print(TTY_Stat.COLUMNS, TTY_Stat.LINES, f'Center alignment work in progress')
+
+        if borders:
+            print("─" * TTY_Stat.COLUMNS)
+        
+        print(f'{" " * (((TTY_Stat.COLUMNS) // 2 ) - message_len // 2 )}{message}')
+
+        if borders:
+            print("─" * TTY_Stat.COLUMNS)
+        
+
+ALIGN = Text_Alignment

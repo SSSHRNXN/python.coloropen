@@ -7,7 +7,7 @@ from coloropen import ColorLogger as clog
 
 test_message = "This is Test message!"
 
-print(clog(test_message, level="INFO"))
+print(clog(test_message, level="INF"))
 print(clog(test_message, level="WARNING"))
 print(clog(test_message, level="ERROR"))
 print(clog(test_message, level="CRITICAL"))
