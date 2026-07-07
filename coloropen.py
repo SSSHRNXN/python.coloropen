@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from datetime import date, datetime
-from re import T
 import shutil
 
 ANSI_base = '\033['
@@ -126,16 +125,37 @@ clog = ColorLogger
 
 
 class Text_Alignment():
-    from coloropen import TTY_Stat
+    from coloropen import TTY_Stat, ColorLogger as clog, FG
 
-    def CENTER(message, borders=False):
-        message_len = len(message)
+    def CENTER(message, borders=False,  cut=False):
+        message_len = len(str(message))
         print(TTY_Stat.COLUMNS, TTY_Stat.LINES, f'Center alignment work in progress')
+
+        shift=True
+        if cut:
+            shift=False
 
         if borders:
             print("─" * TTY_Stat.COLUMNS)
         
-        print(f'{" " * (((TTY_Stat.COLUMNS) // 2 ) - message_len // 2 )}{message}')
+        number_of_spaces = (((TTY_Stat.COLUMNS) // 2 ) - message_len // 2 ) 
+        if number_of_spaces <= 0:
+            number_of_spaces = 0
+            number_of_spaces += 1
+
+        message_formating = f'{" " * number_of_spaces}'
+
+        if len(str(message)) > TTY_Stat.COLUMNS:
+            cut_value = TTY_Stat.COLUMNS - 2
+            if cut:
+                message_cut = str(message)[:cut_value]
+                print(f'{message_formating}{message_cut[:-1]}*{FG.RESET}')
+            else:
+                for i in range(0, len(str(message)), cut_value):
+                    print(f'{message_formating}{str(message)[i:i+cut_value]}')
+
+        else:
+            print(f'{message_formating}{message}{FG.RESET}')
 
         if borders:
             print("─" * TTY_Stat.COLUMNS)
