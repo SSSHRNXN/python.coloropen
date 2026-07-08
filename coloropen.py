@@ -104,7 +104,7 @@ ST = TEXT_STYLE()
 FG256 = Foreground_256Colors
 BG256 = Background_256Colors
 
-def ColorLogger(message, level="INFO"):
+def ColorLogger(message, level="INF"):
     date = datetime.now().strftime("%Y-%M-%d %H:%M:%S")
     log_levels = {
             'INFO' : FG.GREEN,
@@ -130,12 +130,8 @@ def ansi_stripper(text_message):
 
 class Text_Alignment():
 
-    def CENTER(message, borders=False,  cut=False, debug=False):
+    def CENTER(message, borders=False,  cut=False, debug=False, shift_value=TTY_Stat.COLUMNS):
         message_len = len(ansi_stripper(str(message)))
-
-        shift=True
-        if cut:
-            shift=False
 
         if borders:
             print("─" * TTY_Stat.COLUMNS)
@@ -147,11 +143,11 @@ class Text_Alignment():
 
         message_formating = f'{" " * number_of_spaces}'
 
-        if len(str(message)) > TTY_Stat.COLUMNS:
-            cut_value = TTY_Stat.COLUMNS - 2
+        if len(str(message)) > shift_value:
+            cut_value = shift_value - 2
             if cut:
                 message_cut = str(message)[:cut_value]
-                print(f'{message_formating}{message_cut[:-1]}*{FG.RESET}')
+                print(f'{message_formating}{message_cut[:-2]}{ST.REVERSE}*>{FG.RESET}')
             else:
                 for i in range(0, len(str(message)), cut_value):
                     print(f'{message_formating}{str(message)[i:i+cut_value]}')
@@ -166,5 +162,7 @@ class Text_Alignment():
                 print('COLUMNS:', TTY_Stat.COLUMNS,'LINES:', TTY_Stat.LINES, f'Center alignment work in progress')
                 print(clog(f'number_of_spaces: {len(message_formating)}', level="DEBUG"))
                 print(clog(f'message len(): {len(str(message))}', level="DEBUG"))
+                print(clog(f'shift_value: {shift_value}', level= "DEBUG"))
+                print(clog(f'message_formating: {len(message_formating)}', level="DEBUG"))
 
 ALIGN = Text_Alignment
