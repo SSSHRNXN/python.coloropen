@@ -2,6 +2,7 @@
 
 from datetime import date, datetime
 import shutil
+import re
 
 ANSI_base = '\033['
 
@@ -124,12 +125,13 @@ def ColorLogger(message, level="INFO"):
 clog = ColorLogger
 
 
-class Text_Alignment():
-    from coloropen import TTY_Stat, ColorLogger as clog, FG
+def ansi_stripper(text_message):
+    return re.sub(r'\033\[[0-9;]*m', '', text_message)
 
-    def CENTER(message, borders=False,  cut=False):
-        message_len = len(str(message))
-        print(TTY_Stat.COLUMNS, TTY_Stat.LINES, f'Center alignment work in progress')
+class Text_Alignment():
+
+    def CENTER(message, borders=False,  cut=False, debug=False):
+        message_len = len(ansi_stripper(str(message)))
 
         shift=True
         if cut:
@@ -159,6 +161,10 @@ class Text_Alignment():
 
         if borders:
             print("─" * TTY_Stat.COLUMNS)
-        
+       
+        if debug:
+                print('COLUMNS:', TTY_Stat.COLUMNS,'LINES:', TTY_Stat.LINES, f'Center alignment work in progress')
+                print(clog(f'number_of_spaces: {len(message_formating)}', level="DEBUG"))
+                print(clog(f'message len(): {len(str(message))}', level="DEBUG"))
 
 ALIGN = Text_Alignment
