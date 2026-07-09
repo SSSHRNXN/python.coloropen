@@ -1,0 +1,7 @@
+pyproject.toml
+src/coloropen/__init__.py
+src/coloropen/coloropen.py
+src/coloropen.egg-info/PKG-INFO
+src/coloropen.egg-info/SOURCES.txt
+src/coloropen.egg-info/dependency_links.txt
+src/coloropen.egg-info/top_level.txt

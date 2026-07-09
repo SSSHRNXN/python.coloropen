@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+#ver 0.0.1
+
 from datetime import date, datetime
 import shutil
 import re
@@ -78,34 +80,34 @@ class TEXT_STYLE(ANSI_Code_output):
     RESET = 0
 
 
-def Foreground_256Colors(color_value):
-    if color_value > 256:
+def Foreground_255Colors(color_value):
+    if color_value > 255:
         invalid_value = f'{FG.RED}{ST.UNDERLINE}{ST.ITALIC}color_value = {color_value}{FG.RESET}'
-        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-256'
+        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-255'
     elif color_value < 1:
         invalid_value = f'{FG.RED}{ST.UNDERLINE}{ST.ITALIC}color_value = {color_value}{FG.RESET}'
-        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-256'
+        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-255'
     else:
         return f'{ANSI_base}38;5;{color_value}m'
 
-def Background_256Colors(color_value):
-    if color_value > 256:
+def Background_255Colors(color_value):
+    if color_value > 255:
         invalid_value = f'{FG.RED}{ST.UNDERLINE}{ST.ITALIC}color_value = {color_value}{FG.RESET}'
-        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-256'
+        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-255'
     elif color_value < 1:
         invalid_value = f'{FG.RED}{ST.UNDERLINE}{ST.ITALIC}color_value = {color_value}{FG.RESET}'
-        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-256'
+        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-255'
     else:
         return f'{ANSI_base}48;5;{color_value}m'
 
 BG = ANSI_Codes_Background()
 FG = ANSI_Codes_Foreground()
 ST = TEXT_STYLE()
-FG256 = Foreground_256Colors
-BG256 = Background_256Colors
+FG255 = Foreground_255Colors
+BG255 = Background_255Colors
 
 def ColorLogger(message, level="INF"):
-    date = datetime.now().strftime("%Y-%M-%d %H:%M:%S")
+    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_levels = {
             'INFO' : FG.GREEN,
             'INF' : FG.GREEN,
@@ -161,8 +163,13 @@ class Text_Alignment():
         if debug:
                 print('COLUMNS:', TTY_Stat.COLUMNS,'LINES:', TTY_Stat.LINES, f'Center alignment work in progress')
                 print(clog(f'number_of_spaces: {len(message_formating)}', level="DEBUG"))
-                print(clog(f'message len(): {len(str(message))}', level="DEBUG"))
+                print(clog(f'message len() (includes ANSI): {len(str(message))}', level="DEBUG"))
+                print(clog(f'message len() (without ANSI):  {message_len}', level="DEBUG"))
                 print(clog(f'shift_value: {shift_value}', level= "DEBUG"))
-                print(clog(f'message_formating: {len(message_formating)}', level="DEBUG"))
+                if cut:
+                    cut_status = "ON"
+                else:
+                    cut_status = "OFF"
+                print(clog(f'cut_mode: {cut_status}', level="DEBUG"))
 
 ALIGN = Text_Alignment
