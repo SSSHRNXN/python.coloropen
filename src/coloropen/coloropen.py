@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+#ver 0.0.1
+
 from datetime import date, datetime
 import shutil
 import re
@@ -14,7 +16,17 @@ class ANSI_Code_output():
 
 
 class TTY_Stat():
+    #constant
     COLUMNS, LINES = shutil.get_terminal_size()
+
+    @classmethod
+    def columns(cls):
+        return shutil.get_terminal_size().columns
+
+    @classmethod
+    def lines(cls):
+        return shutil.get_terminal_size().lines
+
         
 class ANSI_Codes_Foreground(ANSI_Code_output):
 
@@ -78,34 +90,34 @@ class TEXT_STYLE(ANSI_Code_output):
     RESET = 0
 
 
-def Foreground_256Colors(color_value):
-    if color_value > 256:
+def Foreground_255Colors(color_value):
+    if color_value > 255:
         invalid_value = f'{FG.RED}{ST.UNDERLINE}{ST.ITALIC}color_value = {color_value}{FG.RESET}'
-        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-256'
+        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-255'
     elif color_value < 1:
         invalid_value = f'{FG.RED}{ST.UNDERLINE}{ST.ITALIC}color_value = {color_value}{FG.RESET}'
-        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-256'
+        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-255'
     else:
         return f'{ANSI_base}38;5;{color_value}m'
 
-def Background_256Colors(color_value):
-    if color_value > 256:
+def Background_255Colors(color_value):
+    if color_value > 255:
         invalid_value = f'{FG.RED}{ST.UNDERLINE}{ST.ITALIC}color_value = {color_value}{FG.RESET}'
-        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-256'
+        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-255'
     elif color_value < 1:
         invalid_value = f'{FG.RED}{ST.UNDERLINE}{ST.ITALIC}color_value = {color_value}{FG.RESET}'
-        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-256'
+        return f'{FG.RED}IndexError: {invalid_value}{FG.RED} . Index out of range 1-255'
     else:
         return f'{ANSI_base}48;5;{color_value}m'
 
 BG = ANSI_Codes_Background()
 FG = ANSI_Codes_Foreground()
 ST = TEXT_STYLE()
-FG256 = Foreground_256Colors
-BG256 = Background_256Colors
+FG255 = Foreground_255Colors
+BG255 = Background_255Colors
 
-def ColorLogger(message, level="INFO"):
-    date = datetime.now().strftime("%Y-%M-%d %H:%M:%S")
+def ColorLogger(message, level="INF"):
+    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_levels = {
             'INFO' : FG.GREEN,
             'INF' : FG.GREEN,
@@ -130,12 +142,8 @@ def ansi_stripper(text_message):
 
 class Text_Alignment():
 
-    def CENTER(message, borders=False,  cut=False, debug=False):
+    def CENTER(message, borders=False,  cut=False, debug=False, shift_value=TTY_Stat.COLUMNS):
         message_len = len(ansi_stripper(str(message)))
-
-        shift=True
-        if cut:
-            shift=False
 
         if borders:
             print("─" * TTY_Stat.COLUMNS)
@@ -147,11 +155,11 @@ class Text_Alignment():
 
         message_formating = f'{" " * number_of_spaces}'
 
-        if len(str(message)) > TTY_Stat.COLUMNS:
-            cut_value = TTY_Stat.COLUMNS - 2
+        if len(str(message)) > shift_value:
+            cut_value = shift_value - 2
             if cut:
                 message_cut = str(message)[:cut_value]
-                print(f'{message_formating}{message_cut[:-1]}*{FG.RESET}')
+                print(f'{message_formating}{message_cut[:-2]}{ST.REVERSE}*>{FG.RESET}')
             else:
                 for i in range(0, len(str(message)), cut_value):
                     print(f'{message_formating}{str(message)[i:i+cut_value]}')
@@ -165,6 +173,13 @@ class Text_Alignment():
         if debug:
                 print('COLUMNS:', TTY_Stat.COLUMNS,'LINES:', TTY_Stat.LINES, f'Center alignment work in progress')
                 print(clog(f'number_of_spaces: {len(message_formating)}', level="DEBUG"))
-                print(clog(f'message len(): {len(str(message))}', level="DEBUG"))
+                print(clog(f'message len() (includes ANSI): {len(str(message))}', level="DEBUG"))
+                print(clog(f'message len() (without ANSI):  {message_len}', level="DEBUG"))
+                print(clog(f'shift_value: {shift_value}', level= "DEBUG"))
+                if cut:
+                    cut_status = "ON"
+                else:
+                    cut_status = "OFF"
+                print(clog(f'cut_mode: {cut_status}', level="DEBUG"))
 
 ALIGN = Text_Alignment
